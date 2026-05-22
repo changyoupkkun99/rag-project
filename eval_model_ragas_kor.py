@@ -47,6 +47,7 @@ def llm_answer_generation(retrieved_data, ready_path):
     검색된 데이터 전체를 돌며 LLM 답변을 생성하고 JSON으로 영구 저장합니다.
     """
     start_time = time.time()
+    total_start_time = time.time() # vLLM 개선 확인 용
     print(f"\n🚀 LLM 답변 생성 시작! (총 {len(retrieved_data)}개 쿼리)")
     generation_ready_data = []
 
@@ -66,7 +67,8 @@ def llm_answer_generation(retrieved_data, ready_path):
         generation_ready_data.append(gen_item)
 
         if (idx + 1) % 10 == 0:
-            print(f"  👉 답변 생성 진행률: {idx + 1}/{len(retrieved_data)} (⏱️ 소요 시간: {time.time() - start_time:.2f}초)")
+            avg_time_per_item = (time.time() - total_start_time) / (idx + 1)
+            print(f"  👉 답변 생성 진행률: {idx + 1}/{len(retrieved_data)} (⏱️ 소요 시간: {time.time() - start_time:.2f}초, 평균: {avg_time_per_item})")
             # 10번마다 VRAM 청소
             torch.cuda.empty_cache()
             gc.collect()
