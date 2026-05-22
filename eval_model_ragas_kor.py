@@ -68,7 +68,7 @@ def llm_answer_generation(retrieved_data, ready_path):
 
         if (idx + 1) % 10 == 0:
             avg_time_per_item = (time.time() - total_start_time) / (idx + 1)
-            print(f"  👉 답변 생성 진행률: {idx + 1}/{len(retrieved_data)} (⏱️ 소요 시간: {time.time() - start_time:.2f}초, 평균: {avg_time_per_item})")
+            print(f"  👉 답변 생성 진행률: {idx + 1}/{len(retrieved_data)} (⏱️ 소요 시간: {time.time() - start_time:.2f}초, 평균: {avg_time_per_item:.2f})")
             # 10번마다 VRAM 청소
             torch.cuda.empty_cache()
             gc.collect()

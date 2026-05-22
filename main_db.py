@@ -2,7 +2,7 @@ import os, re, json, gc
 from pathlib import Path
 from dotenv import load_dotenv, set_key, find_dotenv
 # Parsing
-from model_pipeline_options import get_pipeline_options # 파이프 라인 설정
+from model_pipeline_options import get_pipeline_options_pdf # 파이프 라인 설정
 from model_parsing_docling import parsing_docling # Docling, Convert 설정
 from model_parsing_figure_extract import extract_and_images # 이미지 + 표 Image 추출 -> model_table_split와 차이점: 이미지로 보여주기 위한 용도
 from model_parsing_table_data_extract import extract_and_tables # model_parsing_figure_extract와 차이점: LLM이 데이터를 정확히 읽게 하기 위한 용도
@@ -32,7 +32,7 @@ try:
     # Parsing
     print(f"\n✨ 파이프라인 시작!")
     # [Step 0] 파이프라인 설정 로드
-    pipeline_options = get_pipeline_options()
+    pipeline_options = get_pipeline_options_pdf()
     # [Step 1] 파싱 작업
     conv_result = parsing_docling(source, output_path, pipeline_options)
 
