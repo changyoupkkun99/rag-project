@@ -1,4 +1,4 @@
-import os, re, json
+import os, re, json, gc
 from pathlib import Path
 from dotenv import load_dotenv, set_key, find_dotenv
 # Parsing
@@ -12,8 +12,9 @@ from model_chunk_sum import summarize_all_chunks, summarize_all_chunks_finance
 # Embedding
 from model_embedding import generate_embeddings
 from model_milvus import milvus_unified_insert
-
+# Evaluation
 from eval_mian import main_eval
+
 source = "korquad_2_0_data.html"
 file_name = Path(source).stem # 파일 이름 추출
 output_path = Path(f"output/{file_name}")

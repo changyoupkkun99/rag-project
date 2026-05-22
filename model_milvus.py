@@ -46,12 +46,16 @@ def milvus_unified_insert(chunk_list, dense_vectors, sparse_vectors, collection_
     # milvus_id는 auto_id이므로 데이터를 넣지 않습니다. dense_vector부터 순서대로 준비합니다.
 
     # None -> 숫자일 때 0, 문자일 때 ""
-    ids = [chunk.get("id", "") for chunk in chunk_list]
-    types = [chunk.get("type", "") for chunk in chunk_list]
+    ids = [(chunk.get("id") or "") for chunk in chunk_list]
+    types = [chunk.get("type") or "" for chunk in chunk_list]
     pages = [chunk.get("page") if chunk.get("page") is not None else 0 for chunk in chunk_list]  # 정수형 숫자, None -> 0으로 변환
     paths = [chunk.get("path") if chunk.get("path") is not None else "" for chunk in chunk_list]  # 경로 문자열, None -> ""으로변환
-    contents = [chunk.get("content", "") for chunk in chunk_list]  # 보강된 최종 텍스트 본문
-    sources = [chunk.get("source", doc_filename) for chunk in chunk_list]  # 통일된 doc_filename 반영
+    # contents = [chunk.get("content", "") for chunk in chunk_list]  # 보강된 최종 텍스트 본문
+    contents = [
+        str(chunk.get("content") or "").encode('utf-8')[:65000].decode('utf-8', 'ignore')
+        for chunk in chunk_list
+    ]
+    sources = [(chunk.get("source") or doc_filename) for chunk in chunk_list]  # 통일된 doc_filename 반영
     parent_ids = [chunk.get("parent_id") if chunk.get("parent_id") is not None else "" for chunk in chunk_list]  # 부모 구조, None -> ""으로변환
 
     # Milvus에 벌크로 찌르는 데이터 테이블 구조화
